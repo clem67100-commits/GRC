@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clément Wencker | Cyber GRC & eBooks Tactiques</title>
+    <meta name="description" content="Guides tactiques sur la GRC (ISO 27001, ISO 27005) et le CISSP, pensés pour les profils techniques qui veulent aller droit au but.">
+    <meta property="og:title" content="Clément Wencker | Cyber GRC & eBooks Tactiques">
+    <meta property="og:description" content="Des guides tactiques pour vulgariser la GRC et le CISSP, sans digression inutile.">
+    <meta property="og:type" content="website">
     <style>
         :root {
             --bg-dark: #0a0512;
@@ -25,10 +29,18 @@
         body {
             background-color: var(--bg-dark);
             color: var(--text-main);
-            background-image: 
+            background-image:
                 radial-gradient(circle at 15% 50%, rgba(138, 43, 226, 0.08), transparent 25%),
                 radial-gradient(circle at 85% 30%, rgba(0, 242, 254, 0.08), transparent 25%);
             overflow-x: hidden;
+        }
+
+        /* Focus visible partout : nécessaire sur fond sombre, le focus par défaut du navigateur est peu lisible */
+        a:focus-visible,
+        button:focus-visible {
+            outline: 2px solid var(--neon-cyan);
+            outline-offset: 3px;
+            border-radius: 4px;
         }
 
         /* Navigation */
@@ -36,6 +48,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
             padding: 20px 5%;
             border-bottom: 1px solid rgba(138, 43, 226, 0.2);
             backdrop-filter: blur(10px);
@@ -65,7 +79,8 @@
             font-weight: bold;
             border: 1px solid var(--neon-purple);
             box-shadow: 0 0 15px rgba(184, 41, 255, 0.4);
-            transition: all 0.3s ease;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            white-space: nowrap;
         }
 
         .btn-linkedin:hover {
@@ -82,12 +97,14 @@
         }
 
         .hero h1 {
-            font-size: 3rem;
+            font-size: clamp(1.8rem, 5vw, 3rem);
             margin-bottom: 20px;
             text-transform: uppercase;
             background: linear-gradient(to right, #fff, var(--text-muted));
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
+            line-height: 1.2;
         }
 
         .hero p {
@@ -96,7 +113,7 @@
             line-height: 1.6;
         }
 
-        /* NOUVEAU : Section Mindset */
+        /* Section Mindset */
         .mindset {
             max-width: 1100px;
             margin: 0 auto 60px;
@@ -115,7 +132,7 @@
 
         .mindset-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
         }
 
@@ -127,6 +144,7 @@
             border-radius: 0 8px 8px 0;
             position: relative;
             backdrop-filter: blur(5px);
+            overflow: hidden;
         }
 
         .quote-card::after {
@@ -163,6 +181,7 @@
             gap: 15px;
             margin-bottom: 50px;
             flex-wrap: wrap;
+            padding: 0 5%;
         }
 
         .filter-btn {
@@ -172,10 +191,12 @@
             padding: 8px 20px;
             border-radius: 20px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: background 0.3s, box-shadow 0.3s, color 0.3s;
+            font-size: 1rem;
         }
 
-        .filter-btn.active, .filter-btn:hover {
+        .filter-btn[aria-pressed="true"],
+        .filter-btn:hover {
             background: var(--primary-purple);
             color: #fff;
             box-shadow: 0 0 10px var(--primary-purple);
@@ -184,7 +205,7 @@
         /* Ebook Grid */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
             padding: 0 5% 80px;
             max-width: 1200px;
@@ -248,7 +269,7 @@
             padding: 10px;
             border-radius: 5px;
             text-decoration: none;
-            transition: all 0.3s;
+            transition: background 0.3s, box-shadow 0.3s;
         }
 
         .btn-download:hover {
@@ -263,7 +284,7 @@
             padding: 10px 15px;
             border-radius: 5px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: border-color 0.3s, color 0.3s;
         }
 
         .btn-preview:hover {
@@ -275,15 +296,13 @@
         .modal {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             background: rgba(10, 5, 18, 0.85);
             backdrop-filter: blur(5px);
             z-index: 2000;
             justify-content: center;
             align-items: center;
+            padding: 20px;
         }
 
         .modal-content {
@@ -292,28 +311,40 @@
             padding: 30px;
             border-radius: 10px;
             max-width: 500px;
-            width: 90%;
+            width: 100%;
             position: relative;
             box-shadow: 0 0 30px rgba(184, 41, 255, 0.3);
         }
 
         .close-modal {
             position: absolute;
-            top: 15px;
-            right: 20px;
+            top: 12px;
+            right: 15px;
             font-size: 1.5rem;
             cursor: pointer;
             color: var(--text-muted);
+            background: none;
+            border: none;
+            line-height: 1;
+            padding: 6px;
         }
 
         .close-modal:hover { color: #fff; }
 
         footer {
             text-align: center;
-            padding: 40px;
+            padding: 40px 20px;
             border-top: 1px solid rgba(138, 43, 226, 0.2);
             color: var(--text-muted);
             font-size: 0.9rem;
+        }
+
+        /* Respecte les préférences d'accessibilité système */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                transition: none !important;
+                animation: none !important;
+            }
         }
     </style>
 </head>
@@ -321,7 +352,7 @@
 
     <nav>
         <div class="logo">CLÉMENT<span>WENCKER</span></div>
-        <a href="https://www.linkedin.com/in/clementwencker/" target="_blank" class="btn-linkedin">Me Contacter sur LinkedIn</a>
+        <a href="https://www.linkedin.com/in/clementwencker/" target="_blank" rel="noopener noreferrer" class="btn-linkedin">Me Contacter sur LinkedIn</a>
     </nav>
 
     <section class="hero">
@@ -329,15 +360,14 @@
         <p>Prenez de la hauteur sur la gouvernance des systèmes d'information. Des guides tactiques taillés pour les profils techniques qui veulent aller droit au but, sans digression inutile.</p>
     </section>
 
-    <!-- NOUVELLE SECTION : LE MINDSET DU MANAGER -->
-    <section class="mindset">
+    <section class="mindset" aria-label="Le mindset du manager">
         <div class="mindset-header">&gt; // LE MINDSET DU MANAGER : RÈGLES D'OR</div>
         <div class="mindset-grid">
             <div class="quote-card">
                 <p class="quote-text">« La norme ne vérifie pas la solidité technique de vos murs (ça, c'est le Pentest). Elle vérifie la solidité de vos décisions. »</p>
                 <div class="quote-source"># ISO 27001 : LE GUIDE TACTIQUE</div>
             </div>
-            
+
             <div class="quote-card" style="border-left-color: var(--neon-cyan);">
                 <p class="quote-text">« La vie humaine avant tout : c'est la priorité absolue. Aucun actif, aucune donnée et aucun serveur ne vaut une vie humaine. »</p>
                 <div class="quote-source" style="color: var(--neon-purple);"># CISSP : FICHES DE RÉVISION</div>
@@ -350,15 +380,14 @@
         </div>
     </section>
 
-    <div class="filters">
-        <button class="filter-btn active" onclick="filterEbooks('all')">Tous les guides</button>
-        <button class="filter-btn" onclick="filterEbooks('27001')">ISO 27001</button>
-        <button class="filter-btn" onclick="filterEbooks('27005')">ISO 27005</button>
-        <button class="filter-btn" onclick="filterEbooks('cissp')">CISSP</button>
+    <div class="filters" role="group" aria-label="Filtrer les guides par thème">
+        <button class="filter-btn" data-filter="all" aria-pressed="true">Tous les guides</button>
+        <button class="filter-btn" data-filter="27001" aria-pressed="false">ISO 27001</button>
+        <button class="filter-btn" data-filter="27005" aria-pressed="false">ISO 27005</button>
+        <button class="filter-btn" data-filter="cissp" aria-pressed="false">CISSP</button>
     </div>
 
     <section class="grid">
-        <!-- Carte ISO 27001 -->
         <div class="card" data-category="27001">
             <div>
                 <span class="tag">GOUVERNANCE</span>
@@ -367,11 +396,10 @@
             </div>
             <div class="card-actions">
                 <a href="iso27001_guide_tactique.pdf" download class="btn-download">Télécharger</a>
-                <button class="btn-preview" onclick="openModal('ISO 27001', 'Ce guide démystifie les clauses obligatoires 4 à 10 et l\'Annexe A. Il vous apprend à éviter le piège du périmètre trop large et à structurer vos preuves documentaires.')">Aperçu</button>
+                <button class="btn-preview" data-title="ISO 27001" data-desc="Ce guide démystifie les clauses obligatoires 4 à 10 et l'Annexe A. Il vous apprend à éviter le piège du périmètre trop large et à structurer vos preuves documentaires.">Aperçu</button>
             </div>
         </div>
 
-        <!-- Carte ISO 27005 -->
         <div class="card" data-category="27005">
             <div>
                 <span class="tag">GESTION DES RISQUES</span>
@@ -380,11 +408,10 @@
             </div>
             <div class="card-actions">
                 <a href="iso27005_guide_tactique.pdf" download class="btn-download">Télécharger</a>
-                <button class="btn-preview" onclick="openModal('ISO 27005', 'Apprenez à construire une matrice de chaleur incontestable, à choisir entre approche par actifs ou par événements, et à piloter par les indicateurs KRI.')">Aperçu</button>
+                <button class="btn-preview" data-title="ISO 27005" data-desc="Apprenez à construire une matrice de chaleur incontestable, à choisir entre approche par actifs ou par événements, et à piloter par les indicateurs KRI.">Aperçu</button>
             </div>
         </div>
 
-        <!-- Carte CISSP -->
         <div class="card" data-category="cissp">
             <div>
                 <span class="tag">CERTIFICATION</span>
@@ -393,7 +420,7 @@
             </div>
             <div class="card-actions">
                 <a href="cissp_fiches_revision.pdf" download class="btn-download">Télécharger</a>
-                <button class="btn-preview" onclick="openModal('CISSP', 'Des fiches simplifiées qui vont droit au but. Inclus : les pièges classiques de l\'examen, les formules quantitatives vitales et l\'application des 4 canons du code d\'éthique ISC2.')">Aperçu</button>
+                <button class="btn-preview" data-title="CISSP" data-desc="Des fiches simplifiées qui vont droit au but. Inclus : les pièges classiques de l'examen, les formules quantitatives vitales et l'application des 4 canons du code d'éthique ISC2.">Aperçu</button>
             </div>
         </div>
     </section>
@@ -402,48 +429,75 @@
         <p>© 2026 Clément Wencker. Tous droits réservés. Partage de connaissances en sécurité de l'information.</p>
     </footer>
 
-    <!-- Modale d'Aperçu -->
-    <div class="modal" id="previewModal">
+    <div class="modal" id="previewModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
         <div class="modal-content">
-            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <button class="close-modal" id="closeModalBtn" aria-label="Fermer l'aperçu">&times;</button>
             <h3 id="modalTitle" style="color:var(--neon-cyan); margin-bottom:15px;"></h3>
             <p id="modalDesc" style="color:var(--text-main); line-height:1.6;"></p>
         </div>
     </div>
 
     <script>
-        function filterEbooks(category) {
-            const cards = document.querySelectorAll('.card');
-            const buttons = document.querySelectorAll('.filter-btn');
+        const modal = document.getElementById('previewModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDesc = document.getElementById('modalDesc');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        let lastFocusedElement = null;
 
-            buttons.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+        // --- Filtres ---
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const category = btn.dataset.filter;
 
-            cards.forEach(card => {
-                if (category === 'all' || card.dataset.category === category) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
+                document.querySelectorAll('.filter-btn').forEach(b => b.setAttribute('aria-pressed', 'false'));
+                btn.setAttribute('aria-pressed', 'true');
+
+                document.querySelectorAll('.card').forEach(card => {
+                    const show = category === 'all' || card.dataset.category === category;
+                    card.style.display = show ? 'flex' : 'none';
+                });
             });
-        }
+        });
 
-        function openModal(title, desc) {
-            document.getElementById('modalTitle').innerText = title;
-            document.getElementById('modalDesc').innerText = desc;
-            document.getElementById('previewModal').style.display = 'flex';
+        // --- Modale ---
+        function openModal(title, desc, triggerEl) {
+            lastFocusedElement = triggerEl;
+            modalTitle.textContent = title;
+            modalDesc.textContent = desc;
+            modal.style.display = 'flex';
+            closeModalBtn.focus();
+            document.addEventListener('keydown', handleModalKeydown);
         }
 
         function closeModal() {
-            document.getElementById('previewModal').style.display = 'none';
+            modal.style.display = 'none';
+            document.removeEventListener('keydown', handleModalKeydown);
+            if (lastFocusedElement) lastFocusedElement.focus();
         }
 
-        window.onclick = function(event) {
-            const modal = document.getElementById('previewModal');
-            if (event.target === modal) {
+        function handleModalKeydown(e) {
+            if (e.key === 'Escape') {
                 closeModal();
+                return;
+            }
+            // Focus trap simple : un seul élément focusable dans la modale
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                closeModalBtn.focus();
             }
         }
+
+        document.querySelectorAll('.btn-preview').forEach(btn => {
+            btn.addEventListener('click', () => {
+                openModal(btn.dataset.title, btn.dataset.desc, btn);
+            });
+        });
+
+        closeModalBtn.addEventListener('click', closeModal);
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
     </script>
 </body>
 </html>
