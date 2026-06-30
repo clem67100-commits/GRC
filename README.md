@@ -4,8 +4,7 @@ Bienvenue sur le dépôt de partage de connaissances de **Clément Wencker**.
 
 Ce projet héberge des guides de vulgarisation sur la gouvernance des systèmes d'information et la préparation au CISSP. L'objectif : aller droit au but, en français, et adopter la posture tactique du *Mindset Manager*.
 
-### 🌐 [Accéder au site et télécharger les eBooks](https://TON-PSEUDO.github.io/NOM-DE-TON-REPO/) 
-*(Rappel : mets à jour ce lien dès que GitHub aura généré ton URL)*
+### 🌐 [Accéder au site et télécharger les eBooks](https://clem67100-commits.github.io/GRC/) 
 
 ---
 
